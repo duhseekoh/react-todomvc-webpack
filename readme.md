@@ -1,4 +1,4 @@
-# React TodoMVC Example
+# React TodoMVC Example - THIS VERSION STYLED WITH LESS COMPONENTS
 
 Port of TodoMVC react example. (https://github.com/tastejs/todomvc/tree/gh-pages/examples/react) 
 - Added webpack
