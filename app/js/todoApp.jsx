@@ -63,6 +63,7 @@ export default class TodoApp extends React.Component {
   }
 
   toggle(todoToToggle) {
+    console.log('toggle!');
     this.props.model.toggle(todoToToggle);
   }
 

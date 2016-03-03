@@ -1,5 +1,6 @@
 import React from "react";
 import classNames from "classnames";
+import todoItemLess from "./todoItem.less";
 
 var ESCAPE_KEY = 27;
 var ENTER_KEY = 13;
@@ -72,7 +73,8 @@ let TodoItem = React.createClass({
     return (
       <li className={classNames({
         completed: this.props.todo.completed,
-        editing: this.props.editing
+        editing: this.props.editing,
+        "todo-item": true
       })}>
         <div className="view">
           <input

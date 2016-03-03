@@ -1,6 +1,5 @@
 var path = require("path");
 var webpack = require("webpack");
-var ExtractTextPlugin = require("extract-text-webpack-plugin");
 var loadersByExtension = require("./config/loadersByExtension");
 
 module.exports = function(options) {
@@ -19,11 +18,12 @@ module.exports = function(options) {
 		"ttf|eot": "file-loader",
 		"html": "html-loader"
 	};
-	var cssLoader = "css-loader?module&localIdentName=[path][name]---[local]---[hash:base64:5]";
-	var stylesheetLoaders = {
-		"css": cssLoader,
-		"less": [cssLoader, "less-loader"]
-	};
+
+  var stylesheetLoaders = [{
+    test: /\.less$/,
+    loader: "style!css!less"
+  }];
+
 	var additionalLoaders = [
 		// { test: /some-reg-exp$/, loader: "any-loader" }
 	];
@@ -44,7 +44,6 @@ module.exports = function(options) {
 		path: path.join(__dirname, "assets"),
 		publicPath: publicPath,
     filename: "mainMan.js",
-//		filename: "[name].js" + (options.longTermCaching ? "?[chunkhash]" : ""),
 		chunkFilename: (options.devServer ? "[id].js" : "[name].js"),
 		sourceMapFilename: "debugging/[file].map",
 		libraryTarget: undefined,
@@ -59,25 +58,12 @@ module.exports = function(options) {
 		new webpack.PrefetchPlugin("react/lib/ReactComponentBrowserEnvironment")
 	];
 
-	Object.keys(stylesheetLoaders).forEach(function(ext) {
-		var stylesheetLoader = stylesheetLoaders[ext];
-		if(Array.isArray(stylesheetLoader)) stylesheetLoader = stylesheetLoader.join("!");
-		if(options.separateStylesheet) {
-			stylesheetLoaders[ext] = ExtractTextPlugin.extract("style-loader", stylesheetLoader);
-		} else {
-			stylesheetLoaders[ext] = "style-loader!" + stylesheetLoader;
-		}
-	});
-	if(options.separateStylesheet) {
-		plugins.push(new ExtractTextPlugin("[name].css"));
-	}
-
 	return {
     entry: entry,
 		output: output,
 		target: "web",
 		module: {
-			loaders: [].concat(loadersByExtension(loaders)).concat(loadersByExtension(stylesheetLoaders)).concat(additionalLoaders)
+			loaders: [].concat(loadersByExtension(loaders)).concat(stylesheetLoaders).concat(additionalLoaders)
 		},
 		devtool: options.devtool,
 		debug: options.debug,
