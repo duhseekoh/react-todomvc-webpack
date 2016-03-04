@@ -1,9 +1,32 @@
 import React from "react";
 import classNames from "classnames";
 import todoItemLess from "./todoItem.less";
+var Radium = require('radium');
 
 var ESCAPE_KEY = 27;
 var ENTER_KEY = 13;
+
+let styles = {
+  toggle: {
+    width: '40px',
+    height: '40px',
+    textAlign: 'center',
+    position: 'absolute',
+    top: '0',
+    bottom: '0',
+    margin: '0',
+    border: 'none',
+    appearance: 'none'
+  },
+  toggleUnchecked: {
+    position: 'absolute',
+    content: 'url(\'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="-10 -18 100 135"><circle cx="50" cy="50" r="50" fill="none" stroke="#ededed" stroke-width="3"/></svg>\')'
+  },
+  toggleChecked: {
+    position: 'absolute',
+    content: 'url(\'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="-10 -18 100 135"><circle cx="50" cy="50" r="50" fill="none" stroke="#bddad5" stroke-width="3"/><path fill="#5dc2af" d="M72 25L42 71 27 56l-4 4 20 20 34-52z"/></svg>\')'
+  }
+};
 
 let TodoItem = React.createClass({
   handleSubmit: function (event) {
@@ -79,10 +102,18 @@ let TodoItem = React.createClass({
         <div className="view">
           <input
             className="toggle"
+            style={[styles.toggle]}
             type="checkbox"
             checked={this.props.todo.completed}
             onChange={this.props.onToggle}
           />
+          <span style={!this.props.todo.completed ? [styles.toggleUnchecked]: []}
+            onClick={this.props.onToggle}
+          ></span>
+          <span style={this.props.todo.completed ? [styles.toggleChecked]: []}
+            onClick={this.props.onToggle}
+          ></span>
+
           <label onDoubleClick={this.handleEdit}>
             {this.props.todo.title}
           </label>
@@ -101,4 +132,4 @@ let TodoItem = React.createClass({
   }
 });
 
-export default TodoItem;
+export default Radium(TodoItem);
