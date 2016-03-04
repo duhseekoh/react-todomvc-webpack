@@ -20,13 +20,14 @@ module.exports = function(options) {
 	};
 
   var stylesheetLoaders = [{
-    test: /\.less$/,
-    loader: "style!css!less"
+    test: /\.less/,
+    loaders: [
+      "style-loader",
+      "css-loader?modules&importLoaders=1&localIdentName=[path]___[name]__[local]___[hash:base64:5]",
+      "less"
+    ]
   }];
 
-	var additionalLoaders = [
-		// { test: /some-reg-exp$/, loader: "any-loader" }
-	];
 	var alias = {
 
 	};
@@ -53,17 +54,17 @@ module.exports = function(options) {
 		/node_modules[\\\/]react(-router)?[\\\/]/,
 		/node_modules[\\\/]items-store[\\\/]/
 	];
-	var plugins = [
-		new webpack.PrefetchPlugin("react"),
-		new webpack.PrefetchPlugin("react/lib/ReactComponentBrowserEnvironment")
-	];
+//	var plugins = [
+//		new webpack.PrefetchPlugin("react"),
+//		new webpack.PrefetchPlugin("react/lib/ReactComponentBrowserEnvironment")
+//	];
 
 	return {
     entry: entry,
 		output: output,
 		target: "web",
 		module: {
-			loaders: [].concat(loadersByExtension(loaders)).concat(stylesheetLoaders).concat(additionalLoaders)
+			loaders: [].concat(loadersByExtension(loaders)).concat(stylesheetLoaders)
 		},
 		devtool: options.devtool,
 		debug: options.debug,
@@ -78,7 +79,7 @@ module.exports = function(options) {
 			extensions: extensions,
 			alias: alias
 		},
-		plugins: plugins,
+//		plugins: plugins,
 		devServer: {
 			stats: {
 				cached: false,
