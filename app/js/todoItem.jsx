@@ -6,6 +6,7 @@ var Radium = require('radium');
 var ESCAPE_KEY = 27;
 var ENTER_KEY = 13;
 
+// RADIUM STYLES
 let styles = {
   toggle: {
     width: '40px',
